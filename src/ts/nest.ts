@@ -27,7 +27,7 @@ export class Nest {
         ctx.fill();
 
         ctx.fillStyle = "white";
-        ctx.font = "30px Comic Sans MS";
+        ctx.font = "30px sans-serif";
         ctx.textAlign = "center";
         ctx.fillText(`${this.counter}`, this.pos.x, this.pos.y + 8);
     }

@@ -6,6 +6,8 @@ export const Global = {
     food: new QuadTree(fullScreenRect, 4),
     bluePheromones: new QuadTree(fullScreenRect, 4),
     redPheromones: new QuadTree(fullScreenRect, 4),
+    tool: 0,
+    isBeingDragged: false,
     obstacles: [
         { x1: 0, y1: 0, x2: width, y2: 0 },
         { x1: 0, y1: height, x2: width, y2: height },

@@ -136,6 +136,19 @@ export class Ant {
             );
 
             if (distance < minDist) {
+                // Check for collisions
+                let collided = false;
+                for (let j of Global.obstacles) {
+                    if (lineCollision(
+                        this.pos.x, this.pos.y,
+                        pool[i].value.pos.x, pool[i].value.pos.y,
+                        j.x1, j.y1,
+                        j.x2, j.y2
+                    )) collided = true;
+                }
+
+                if (collided) continue;
+
                 minDist = distance;
                 closest = pool[i];
                 index = i;

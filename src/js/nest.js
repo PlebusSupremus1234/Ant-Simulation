@@ -19,7 +19,7 @@ export class Nest {
         ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, false);
         ctx.fill();
         ctx.fillStyle = "white";
-        ctx.font = "30px Comic Sans MS";
+        ctx.font = "30px sans-serif";
         ctx.textAlign = "center";
         ctx.fillText(`${this.counter}`, this.pos.x, this.pos.y + 8);
     }

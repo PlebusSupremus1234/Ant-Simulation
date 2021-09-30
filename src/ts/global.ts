@@ -11,6 +11,8 @@ export const Global: {
     food: QuadTree<Food>;
     bluePheromones: QuadTree<Pheromone>;
     redPheromones: QuadTree<Pheromone>;
+    tool: 0 | 1;
+    isBeingDragged: boolean;
     obstacles: {
         x1: number, y1: number,
         x2: number, y2: number
@@ -19,6 +21,8 @@ export const Global: {
     food: new QuadTree<Food>(fullScreenRect, 4),
     bluePheromones: new QuadTree<Pheromone>(fullScreenRect, 4),
     redPheromones: new QuadTree<Pheromone>(fullScreenRect, 4),
+    tool: 0,
+    isBeingDragged: false,
     obstacles: [
         // Horizontal
         { x1: 0, y1: 0, x2: width, y2: 0 },

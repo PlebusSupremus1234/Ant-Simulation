@@ -42,6 +42,7 @@ export class QuadTreeElement<T> {
 export class QuadTree<T> {
     boundary: Rectangle<T>;
     capacity: number;
+    parent: QuadTree<T> | null;
 
     points: QuadTreeElement<T>[] = [];
     divided = false;
@@ -51,9 +52,10 @@ export class QuadTree<T> {
     southeast: null | QuadTree<T> = null;
     southwest: null | QuadTree<T> = null;
 
-    constructor(boundary: Rectangle<T>, capacity: number) {
+    constructor(boundary: Rectangle<T>, capacity: number, parent: QuadTree<T> | null = null) {
         this.boundary = boundary;
         this.capacity = capacity;
+        this.parent = parent;
     }
 
     public subdivide() {
@@ -63,13 +65,14 @@ export class QuadTree<T> {
         let h = this.boundary.h;
 
         let ne = new Rectangle<T>(x + w / 2, y - h / 2, w / 2, h / 2);
-        this.northeast = new QuadTree<T>(ne, this.capacity);
+        this.northeast = new QuadTree<T>(ne, this.capacity, this);
         let nw = new Rectangle<T>(x - w / 2, y - h / 2, w / 2, h / 2);
-        this.northwest = new QuadTree<T>(nw, this.capacity);
+        this.northwest = new QuadTree<T>(nw, this.capacity, this);
         let se = new Rectangle<T>(x + w / 2, y + h / 2, w / 2, h / 2);
-        this.southeast = new QuadTree(se, this.capacity);
+        this.southeast = new QuadTree(se, this.capacity, this);
         let sw = new Rectangle<T>(x - w / 2, y + h / 2, w / 2, h / 2);
-        this.southwest = new QuadTree(sw, this.capacity);
+        this.southwest = new QuadTree(sw, this.capacity, this);
+
         this.divided = true;
     }
 
@@ -94,17 +97,27 @@ export class QuadTree<T> {
         else {
             for (let i = this.points.length - 1; i >= 0; i--) {
                 let p = this.points[i];
-                if (p.flagged) this.points.pop();
-                 else {
+
+                if (p.flagged) {
+                    [
+                        this.points[i],
+                        this.points[this.points.length - 1]
+                    ] = [
+                        this.points[this.points.length - 1],
+                        this.points[i]
+                    ];
+                    this.points.pop();
+                }
+                else {
                     if (range.contains(p.value)) found.push(p);
                 }
             }
 
             if (this.divided) {
-                this.northwest.query(range, found);
-                this.northeast.query(range, found);
-                this.southwest.query(range, found);
-                this.southeast.query(range, found);
+                if (this.northwest) this.northwest.query(range, found);
+                if (this.northeast) this.northeast.query(range, found);
+                if (this.southwest) this.southwest.query(range, found);
+                if (this.southeast) this.southeast.query(range, found);
             }
         }
 
